@@ -1,24 +1,22 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import React from 'react';
+// import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
+// import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
+// import Checkbox from '@mui/material/Checkbox';
+// import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ListItemSecondaryAction } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
-
-
+import { db } from './firebase'
 
 function Todo(props) {
     return (
@@ -35,13 +33,16 @@ function Todo(props) {
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={props.todo}
+                                        primary={props.todo.todo}
                                     />
                                     <ListItemSecondaryAction>
-                                        <IconButton edge="end" aria-label='edit'>
+                                        <IconButton edge="end" color="primary" aria-label='edit'>
                                             <EditOutlinedIcon />
                                         </IconButton>
-                                        <IconButton edge="end" aria-label='delete'>
+                                        <IconButton
+                                            onClick={event => db.collection('todos').doc(props.todo.id).delete()}
+                                            edge="end"
+                                            color="secondary" aria-label='delete'>
                                             <DeleteIcon />
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -50,7 +51,7 @@ function Todo(props) {
                         </Paper>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box>x
         </div>
     )
 }

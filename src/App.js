@@ -1,4 +1,4 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import './App.css';
 import { db } from './firebase'
@@ -14,14 +14,19 @@ function App() {
 
   useEffect(() => {
     db.collection('todos').onSnapshot(snapshot => {
-
+      setTodos(snapshot.docs.map(doc => ({
+        id: doc.id, todo: doc.data().todo
+      })))
     })
   }, []);
 
-  // const createTodo = (e) => {
-  //   e.preventDefault();
-  //   setInput('');
-  // };
+  const createTodo = (e) => {
+    e.preventDefault();
+    db.collection('todos').add({
+      todo: input
+    });
+    setInput('');
+  };
   return (
     <div className="App">
       <Appbar />
@@ -30,18 +35,19 @@ function App() {
           justifyContent="center" className='App_grid'>
           <Grid item xs={8} sm={8} md={4} lg={4}>
             <TextField
-              label="create todo"
+              label="Create Todo"
               variant="outlined"
               size="small"
               value={input}
               onChange={e => setInput(e.target.value)}
             />
-            <Button variant="contained" className='App_submitBtn'>SAVE</Button>
+            <Button disabled={!input} type="submit" variant="contained" className='App_submitBtn' onClick={createTodo}>SAVE</Button>
           </Grid>
         </Grid>
-        <Todo todo="Single-line item" />
-        <Todo todo="2nd Todo item" />
       </Box>
+      {todos.map(todo => (
+        <Todo todo={todo} />
+      ))}
     </div>
   );
 }
