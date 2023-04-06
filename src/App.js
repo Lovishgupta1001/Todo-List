@@ -1,22 +1,22 @@
 import React, { useDebugValue } from 'react';
 import { useState, useEffect } from 'react';
 import './App.css';
+import { db } from './firebase'
 import Appbar from './Appbar';
 import Todo from './Todo';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-// import db from './firebase'
 function App() {
   const [input, setInput] = useState('');
   const [todos, setTodos] = useState([]);
 
-  // useEffect(() => {
-  //   db.collection('todos').onSnapshot(snapshot => {
+  useEffect(() => {
+    db.collection('todos').onSnapshot(snapshot => {
 
-  //   })
-  // }, []);
+    })
+  }, []);
 
   // const createTodo = (e) => {
   //   e.preventDefault();
