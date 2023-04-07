@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -16,13 +16,39 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ListItemSecondaryAction } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+// import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import { db } from './firebase'
+import "./Todo.css"
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 function Todo(props) {
+
+    const [open, setOpen] = useState(false);
+    const [input, setInput] = useState('');
+    const handleOpen = () => { setOpen(true) }
     return (
         <div>
-            <Box sx={{ flexGrow: 1 }} justifyContent="center" >
+            <Box sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center" >
                 <Grid container spacing={3}>
+                    <Modal
+                        open={open}
+                        onClose={e => setOpen(false)}
+                        className='todo_modal'>
+                        <div>
+                            <h1>Hello Modal</h1>
+                        </div>
+                    </Modal>
                     <Grid item xs={10} sm={10} md={6} lg={6}>
                         <Paper>
                             <List>
@@ -36,7 +62,9 @@ function Todo(props) {
                                         primary={props.todo.todo}
                                     />
                                     <ListItemSecondaryAction>
-                                        <IconButton edge="end" color="primary" aria-label='edit'>
+                                        <IconButton
+                                            edge="end" color="primary" aria-label='edit'
+                                            onClick={handleOpen} >
                                             <EditOutlinedIcon />
                                         </IconButton>
                                         <IconButton
