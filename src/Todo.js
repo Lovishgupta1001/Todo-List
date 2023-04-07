@@ -20,6 +20,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Modal from '@mui/material/Modal';
 import { db } from './firebase'
 import "./Todo.css"
+import { FormControl, TextField, Button } from '@mui/material';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -36,19 +37,43 @@ function Todo(props) {
 
     const [open, setOpen] = useState(false);
     const [input, setInput] = useState('');
-    const handleOpen = () => { setOpen(true) }
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
+    const updateTodo = () => {
+        db.collection('todos').doc(props.todo.id).set({
+            todo: input
+        }, { merge: true });
+        setInput('');
+        setOpen(false);
+    }
     return (
         <div>
+            <Modal
+                open={open}
+                onClose={e => setOpen(false)}
+                className='todo_modal'>
+                <div>
+                    <h4>Update Todo</h4>
+                    <FormControl className='todo_modalForm'>
+                        <form>
+                            <TextField
+                                label="update todo"
+                                placeholder={props.todo.todo}
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                variant='outlined'
+                                size='small'
+                            />
+                            <Button type='submit' color="primary" variant='contained' size="small" className='todo_submit'
+                                onClick={updateTodo}>Update</Button>
+                        </form>
+                    </FormControl>
+                </div>
+            </Modal>
             <Box sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center" >
                 <Grid container spacing={3}>
-                    <Modal
-                        open={open}
-                        onClose={e => setOpen(false)}
-                        className='todo_modal'>
-                        <div>
-                            <h1>Hello Modal</h1>
-                        </div>
-                    </Modal>
                     <Grid item xs={10} sm={10} md={6} lg={6}>
                         <Paper>
                             <List>
